@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>我的遊戲小站</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; }
+        .game-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
+        .game-card { background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .game-card img { width: 100%; border-radius: 5px; }
+        .game-card h3 { font-size: 16px; margin: 10px 0; }
+        .play-btn { display: inline-block; padding: 8px 15px; background: #ff5722; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>🎮 最新 HTML5 遊戲</h1>
+    <div id="game-list" class="game-container">載入中...</div>
+
+    <script>
+        // 使用 GamePix 的公開 API 獲取遊戲資訊
+        const apiURL = "https://games.gamepix.com";
+
+        fetch(apiURL)
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById('game-list');
+                list.innerHTML = ""; // 清空載入中文字
+                
+                data.data.forEach(game => {
+                    const card = `
+                        <div class="game-card">
+                            <img src="${game.thumbnailUrl}" alt="${game.title}">
+                            <h3>${game.title}</h3>
+                            <a href="${game.url}" target="_blank" class="play-btn">立即遊玩</a>
+                        </div>
+                    `;
+                    list.innerHTML += card;
+                });
+            })
+            .catch(err => console.error("載入失敗:", err));
+    </script>
+</body>
+</html>
